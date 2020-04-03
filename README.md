@@ -1,2 +1,2 @@
-# Лабы по ОСям
-Здесь можно найти все лабы, которые сданы _(или не сданы, но в процессе)_.
+# Operating Systems Labs
+Here one may find the labs made and checked during the Operating Systems course _(or the made but not checked ones)_.
