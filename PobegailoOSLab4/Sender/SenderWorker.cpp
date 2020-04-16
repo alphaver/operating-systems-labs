@@ -74,6 +74,11 @@ void SenderWorker::InitializeSender()
     }
 }
 
+unsigned long SenderWorker::GetProcessID()
+{
+    return GetCurrentProcessId();
+}
+
 void SenderWorker::OpenBinaryFile
     (const std::string &fileName,
      const std::string &handle)

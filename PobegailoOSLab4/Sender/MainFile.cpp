@@ -22,6 +22,8 @@ int main(int argc, char **argv)
         return 0xFF;
     }
 
+    std::cout << "This Sender has the number " << SenderWorker::GetProcessID() << '\n';
+
     try
     {
         SenderWorker::OpenBinaryFile(argv[0], argv[1]);

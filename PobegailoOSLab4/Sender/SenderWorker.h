@@ -22,6 +22,7 @@ private:
 
 public:
     static void InitializeSender();
+    static unsigned long GetProcessID();
     static void OpenBinaryFile(const std::string &, const std::string &);
     static void SignalReceiver();
     static void SendMessageToReceiver(const std::string &);

@@ -173,16 +173,21 @@ void ReceiverWorker::RunAndWaitForSenders
 
 std::string ReceiverWorker::ReadMessage()
 {
-    WaitForSingleObject(fileMutex, INFINITE);
-
-    saveFilePointer(&queueTail);
-
-    restoreFilePointer(&queueHead);
-    DWORD tempHead = queueHead;
     Message receivedMsg;
+    receivedMsg.processID = 0;
     std::string result;
+    DWORD tempHead;
 
-    if (!ReadFile
+    while (receivedMsg.processID == 0)
+    {
+        WaitForSingleObject(fileMutex, INFINITE);
+
+        saveFilePointer(&queueTail);
+
+        restoreFilePointer(&queueHead);
+        tempHead = queueHead;
+
+        if (!ReadFile
         (
             file,
             &receivedMsg,
@@ -190,17 +195,22 @@ std::string ReceiverWorker::ReadMessage()
             nullptr,
             nullptr
         ))
-    {
-        throw SyscallException("Can't read the message!", GetLastError());
+        {
+            throw SyscallException("Can't read the message!", GetLastError());
+        }
+
+        if (receivedMsg.processID == 0)
+        {
+            restoreFilePointer(&queueTail);
+            ReleaseMutex(fileMutex);
+            Sleep(5000);
+        }
     }
 
-    result = receivedMsg.processID == 0
-             ? "No message for the Receiver!"
-             : "Message sent by Sender #" + std::to_string(receivedMsg.processID) +
-               ": " + receivedMsg.message;
+    result =  "Message sent by Sender #" + std::to_string(receivedMsg.processID) +
+              ": " + receivedMsg.message;
     restoreFilePointer(&tempHead);
-    if (receivedMsg.processID != 0)
-        writeZeroMessage();
+    writeZeroMessage();
 
     saveFilePointer(&queueHead);
     if (queueHead == fileSize)
