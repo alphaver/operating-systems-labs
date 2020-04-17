@@ -22,7 +22,6 @@ DWORD __stdcall Runner::markerThreadProc(LPVOID number)
 
 	int threadNumber = (int)number;
 	std::srand(threadNumber);
-	bool *marked = new bool[arraySize]();
 	int markedNumber = 0;
 
 	while (true)
@@ -34,9 +33,8 @@ DWORD __stdcall Runner::markerThreadProc(LPVOID number)
 			Sleep(5);
 			array[idx] = threadNumber + 1;
 			Sleep(5);
-			LeaveCriticalSection(&arraySection);
+            LeaveCriticalSection(&arraySection);
 
-			marked[idx] = true;
 			++markedNumber;
 		}
 		else
@@ -58,8 +56,8 @@ DWORD __stdcall Runner::markerThreadProc(LPVOID number)
 			if (retCode == WAIT_OBJECT_0)
 			{
 				for (int i = 0; i < arraySize; ++i)
-					if (marked[i]) array[i] = 0;
-				delete[] marked;
+					if (array[i] == threadNumber + 1) 
+                        array[i] = 0;
 
 				return 0;
 			}

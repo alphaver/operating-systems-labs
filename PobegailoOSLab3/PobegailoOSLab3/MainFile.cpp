@@ -8,16 +8,12 @@ int main()
 	std::cin >> arrayNum;
 	Runner::CreateArray(arrayNum);
 
-	// 'littleNiggers' here is just a reference to
-	// Agatha Christie's famous novel 'Ten Little
-	// Niggers' also known as 'And Then There Were 
-	// None' and 'Ten Little Indians.'
 	std::cout << "Input the number of markers: ";
-	int littleNiggers, nigger;
-	std::cin >> littleNiggers;
-	Runner::CreateAndRunMarkers(littleNiggers);
+	int markers, currentMarker;
+	std::cin >> markers;
+	Runner::CreateAndRunMarkers(markers);
 
-	while (littleNiggers > 0)
+	while (markers > 0)
 	{
 		Runner::WaitForMarkers();
 
@@ -25,11 +21,11 @@ int main()
 		Runner::PrintArray();
 
 		std::cout << "Choose a Marker to kill: ";
-		std::cin >> nigger;
-		if (!Runner::TryKillMarker(nigger - 1))
+		std::cin >> currentMarker;
+		if (!Runner::TryKillMarker(currentMarker - 1))
 			std::cout << "Couldn't kill Marker!";
 		else
-			--littleNiggers;
+			--markers;
 
 		std::cout << "The resulting array: ";
 		Runner::PrintArray();
